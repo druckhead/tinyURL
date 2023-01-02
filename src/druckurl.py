@@ -140,6 +140,50 @@ class DruckUrl:
         request_url = f"{self._url}/archive?api_token={self.__key}"
         response = patch(request_url, json=request_body)
 
+        if response.status_code == 200:
+            response_as_json = response.json()
+            # self._update_my_urls(response_as_json)
+            # self._save()
+            return response_as_json
+
+        raise exceptions.RequestException(response.text)
+
+    def toggle_analytics_collecting(self, domain: str, alias: str):
+        request_body = {
+            "enabled": True,
+            "domain": domain,
+            "alias": alias
+        }
+
+        request_url = f"{self._url}/analytics/status?api_token={self.__key}"
+        response = delete(request_url, json=request_body)
+
+        if response.status_code == 200:
+            response_as_json = response.json()
+            # self._update_my_urls(response_as_json)
+            # self._save()
+            return response_as_json
+
+        raise exceptions.RequestException(response.text)
+
+    def toggle_analytics_sharing(self, domain: str, alias: str):
+        request_body = {
+            "public": True,
+            "domain": domain,
+            "alias": alias
+        }
+
+        request_url = f"{self._url}/analytics/sharing?api_token={self.__key}"
+        response = delete(request_url, json=request_body)
+
+        if response.status_code == 200:
+            response_as_json = response.json()
+            # self._update_my_urls(response_as_json)
+            # self._save()
+            return response_as_json
+
+        raise exceptions.RequestException(response.text)
+
 
 if __name__ == '__main__':
     dr = DruckUrl()
